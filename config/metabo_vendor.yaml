@@ -1,0 +1,8 @@
+metabo:
+  vendor:
+    pos_matrix: data/metabolomics_raw/meta_intensity_pos.xlsx
+    neg_matrix: data/metabolomics_raw/meta_intensity_neg.xlsx
+    # 可选：保留供以后做 MS2 匹配
+    pos_ms2_dir: 
+    neg_ms2_dir: 
+

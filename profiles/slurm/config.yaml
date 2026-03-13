@@ -1,0 +1,32 @@
+# profiles/slurm/config.yaml  —— 仅适用于 Snakemake 7.x
+
+jobscript: "profiles/slurm/jobscript.sh"
+
+# 经典 cluster 字符串，一行写完（\ 只是换行可读）
+cluster: "sbatch --partition={resources.partition} \
+                 --cpus-per-task={threads} \
+                 --mem={resources.mem_mb}M \
+                 --time={resources.runtime} \
+                 {resources.gres} \
+                 -J {rule}.{wildcards} \
+                 -o logs/slurm/{rule}.{wildcards}.%j.out \
+                 -e logs/slurm/{rule}.{wildcards}.%j.err \
+                 {resources.slurm_extra}"
+
+
+# 最大同时提交的 job 数；若实际只跑约 30 个，检查：1) 命令行是否传了 -j 30  2) 集群是否限制单用户并发（如 sacctmgr show user）
+jobs: 300
+keep-going: true
+rerun-incomplete: true
+latency-wait: 1200
+
+default-resources:
+  - mem_mb=8000
+  - runtime=10
+  - partition=low,big,amd
+  - gres=""
+  - slurm_extra=""
+
+use-conda: true
+conda-frontend: conda
+conda-prefix: "/public/home/zoujianghua/multiomics_project/.snakemake/conda"

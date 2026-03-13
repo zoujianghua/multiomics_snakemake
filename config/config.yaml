@@ -1,0 +1,52 @@
+paths:
+  hsi_raw: "data/hsi_raw"
+  rnaseq_raw: "data/rnaseq_raw"
+  wgs_raw: "data/wgs_raw"
+
+hsi:
+  band_index: 271
+  threshold_raw: 600
+  min_area: 500
+  morph_closing: true
+  center_half: 40
+  max_pixels_roi: 200
+  z_thresh: 4.0
+  save_masks_png: true
+  bags_per_condition: 5
+  bag_size: 10
+  seed: 2025
+  export_group_xlsx: true
+  patch_target: "phase"   # 单组运行时使用；多组时见 patch_targets
+  patch_seed: 42
+  patch_size: 32
+  patch_stride: 16
+  max_patches_per_image: 400
+  # 多标签并行（phase, phase_core；生理状态在 physiological.smk 单独展开）
+  patch_targets: ["phase"]
+  # 多组几何并行：键 param_suffix，值 stride + max_patches_per_image；先跑 400/800/1600 三档
+  patch_param_sets:
+    s32_maxp400:  { stride: 32, max_patches_per_image: 400 }
+  # Image/Leaf 级多标签（与 patch 一致，便于跨 level 对比）
+  image_targets: ["phase"]
+  
+references:
+      fasta: "/public/home/zoujianghua/multiomics_project/references/Mikania_micrantha.RefGenome.Chromosome.fasta"
+      gff3:  "/public/home/zoujianghua/multiomics_project/references/Mikania_micrantha.Chromosome.gff3"
+      gtf:   "/public/home/zoujianghua/multiomics_project/references/annotation/genes.gtf"
+      hisat2_index: "/public/home/zoujianghua/multiomics_project/references/hisat2/genome"   # 前缀
+rnaseq:
+    stranded: 0          # 文库方向：0=非链特异, 1=正链, 2=反链（常见 dUTP）
+    featurecounts_extra: ""    # 给 featureCounts 的额外参数，可留空
+    # Novel transcripts 相关配置
+    novel_class_codes: ["u"]  # gffcompare class_code 筛选：u=完全novel, x=antisense, i=intronic
+                              # 默认只提取 u，可扩展为 ["u", "x", "i"] 等
+
+wgs:
+  fastqc_raw: false        # 需要“fastp前”的原始FastQC就改成 true
+  fastqc_clean: true       # 建议保留“fastp后”的FastQC
+  variant_filters:
+    snp:   'QD<2.0 || FS>60.0 || MQ<40.0 || SOR>3.0 || MQRankSum<-12.5 || ReadPosRankSum<-8.0'
+    indel: 'QD<2.0 || FS>200.0 || SOR>10.0 || ReadPosRankSum<-20.0'
+
+containers:
+  rnaseq: "/public/home/zoujianghua/multiomics_project/containers/metabo_rnaseq_bioc320.sif"

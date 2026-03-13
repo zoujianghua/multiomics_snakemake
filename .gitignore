@@ -1,0 +1,19 @@
+# 不上传的数据/结果/临时文件
+data/
+logs/
+references/
+envs/
+results/
+emappertmp_dmdn_z9fx6k7y/
+
+# 不上传的压缩包和运行日志
+*.gz
+*.out
+*.err
+
+# snakemake 自动生成的临时文件
+.snakemake/
+tmp/
+temp/
+__pycache__/
+*.pyc

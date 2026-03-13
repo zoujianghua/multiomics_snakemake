@@ -1,0 +1,22 @@
+# 忽略所有原始数据和巨大中间文件
+data/
+results/hsi/
+logs/
+.snakemake/
+
+# 忽略所有大于几十 MB 的常见格式
+*.fastq
+*.fastq.gz
+*.fq.gz
+*.bam
+*.bai
+*.sif
+*.npz
+*.h5
+*.npy
+*.RData
+*.rds
+*.pt
+*.pth
+*.onnx
+

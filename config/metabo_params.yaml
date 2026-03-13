@@ -1,0 +1,13 @@
+xcms:
+  ppm: 15
+  peakwidth: [5, 40]
+  snthresh: 10
+  prefilter: [3, 1000]
+  mzdiff: -0.001
+  noise: 0
+align:
+  method: obiwarp
+group:
+  bandwidth: 5
+  minFraction: 0.7
+fillPeaks: true
